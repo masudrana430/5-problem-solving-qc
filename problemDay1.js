@@ -60,6 +60,7 @@ function swap(a, b) {
 }
 
 console.log(swap(5, 10)); // { a: 10, b: 5 }
+
 // Problem 2: Check Even or Odd
 function isEven(n) {
     return n % 2 === 0;
