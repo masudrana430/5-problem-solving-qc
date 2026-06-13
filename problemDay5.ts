@@ -1,0 +1,135 @@
+// Day 5 — Functions & Scope Problem 21: Factorial (Recursive) [Easy] Description: Write a recursive function factorial(n) that returns the factorial of a non-negative integer n. Example: Input: 5 → Output: 120 (5×4×3×2×1)Input: 0 → Output: 1 Hint: Base case: factorial(0) = 1. Recursive case: n * factorial(n-1).
+
+function factorialts(n: number): number {
+    if (n < 0) {
+        throw new Error("Factorial is not defined for negative numbers");
+    }
+
+    if (!Number.isInteger(n)) {
+        throw new Error("Factorial only works for integers");
+    }
+
+    if (n === 0) {
+        return 1;
+    }
+
+    return n * factorialts(n - 1);
+}
+
+console.log(factorialts(5)); // 120
+console.log(factorialts(0)); // 1
+
+
+// Problem 22: Fibonacci Sequence [Easy] Description: Write a function fibonacci(n) that returns the nth number in the Fibonacci sequence. Example: Input: 6 → Output: 8 (0,1,1,2,3,5,8...) Hint: Try both iterative and recursive approaches.
+
+function fibonacciTS(n: number): number {
+    if (n <= 1) return n;
+
+    let first: number = 0;
+    let second: number = 1;
+
+    for (let i: number = 2; i <= n; i++) {
+        let next: number = first + second;
+        first = second;
+        second = next;
+    }
+
+    return second;
+}
+
+console.log(fibonacciTS(6)); // 8
+console.log(fibonacciTS(0)); // 0
+console.log(fibonacciTS(1)); // 1
+
+
+// Problem 23: Create a Counter with Closure  [Medium]
+// Description: Write a function makeCounter() that returns an object with increment, decrement, and getCount methods using closure.
+// Example:
+// const c = makeCounter();c.increment(); c.increment();c.getCount(); // 2
+// Hint: Use a variable inside the outer function that inner functions can access.
+
+
+type Counter = {
+    increment: () => void;
+    decrement: () => void;
+    getCount: () => number;
+};
+
+function makeCounterTS(): Counter {
+    let count: number = 0;
+
+    return {
+        increment(): void {
+            count++;
+        },
+
+        decrement(): void {
+            count--;
+        },
+
+        getCount(): number {
+            return count;
+        }
+    };
+}
+
+const counter = makeCounterTS();
+
+counter.increment();
+counter.increment();
+
+console.log(counter.getCount()); // 2
+
+counter.decrement();
+
+console.log(counter.getCount()); // 1
+
+// Problem 24: Curry a Function  [Medium]
+// Description: Write a function curry(fn) that converts a function of two arguments into a curried version.
+// Example:
+// const add = curry((a,b) => a+b);add(2)(3); // 5
+// Hint: Return a function from inside a function.
+
+
+const curryTS = 
+    (fn: (a: number, b: number) => number) =>
+    (a: number) =>
+    (b: number): number =>
+        fn(a, b);
+
+const addTS = curryTS((a: number, b: number): number => a + b);
+
+console.log(addTS(2)(3)); // 5
+
+
+// Problem 25: Memoize a Function  [Medium]
+// Description: Write a function memoize(fn) that caches the results of a function so repeated calls with the same input return the cached result.
+// Example:
+// const memoAdd = memoize(n => n + 10);memoAdd(5); // 15 (computed)memoAdd(5); // 15 (from cache)
+// Hint: Use an object as a cache inside the outer function.
+
+function memoizeTS(fn: (n: number) => number): (n: number) => number {
+    const cache: Record<number, number> = {};
+
+    return function(n: number): number {
+        if (n in cache) {
+            console.log("From cache");
+            return cache[n];
+        }
+
+        console.log("Computed");
+        const result: number = fn(n);
+        cache[n] = result;
+
+        return result;
+    };
+}
+
+const memoAddTS = memoizeTS((n: number): number => n + 10);
+
+console.log(memoAddTS(5)); // Computed → 15
+console.log(memoAddTS(5)); // From cache → 15
+console.log(memoAddTS(7)); // Computed → 17
+console.log(memoAddTS(7)); // From cache → 17
+
+
