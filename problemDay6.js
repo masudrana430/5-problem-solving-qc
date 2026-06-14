@@ -28,7 +28,14 @@ console.log(age);      // 25
 // Input: [1,2], [3,4], [5]Output: [1,2,3,4,5]
 // Hint: Use rest parameters and spread inside reduce or flat.
 
- 
+ function mergeArraysJS(...arrays) {
+  return arrays.reduce((result, currentArray) => {
+    return [...result, ...currentArray];
+  }, []);
+}
+
+console.log(mergeArraysJS([1, 2], [3, 4], [5]));
+// [1, 2, 3, 4, 5]
  
  
  
@@ -41,7 +48,20 @@ console.log(age);      // 25
 // Hint: Use new Promise with setTimeout inside.
 
  
- 
+ function delayJS(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+delayJS(1000)
+  .then(() => {
+    console.log("1 sec");
+    return delayJS(2000);
+  })
+  .then(() => {
+    console.log("3 sec total");
+  });
  
  
 

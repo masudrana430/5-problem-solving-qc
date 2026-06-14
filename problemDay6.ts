@@ -34,7 +34,14 @@ console.log(ageTS);       // 25
 // Input: [1,2], [3,4], [5]Output: [1,2,3,4,5]
 // Hint: Use rest parameters and spread inside reduce or flat.
 
- 
+function mergeArraysTS(...arrays: number[][]): number[] {
+  return arrays.reduce((result: number[], currentArray: number[]) => {
+    return [...result, ...currentArray];
+  }, []);
+}
+
+console.log(mergeArraysTS([1, 2], [3, 4], [5]));
+// [1, 2, 3, 4, 5]
  
  
  
@@ -47,7 +54,20 @@ console.log(ageTS);       // 25
 // Hint: Use new Promise with setTimeout inside.
 
  
- 
+ function delayTS(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+delayTS(1000)
+  .then((): Promise<void> => {
+    console.log("1 sec");
+    return delayTS(2000);
+  })
+  .then((): void => {
+    console.log("3 sec total");
+  });
  
  
 
