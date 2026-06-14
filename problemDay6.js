@@ -71,3 +71,23 @@ delayJS(1000)
 // Example:
 // await getUserData(1);// returns {id:1, name:'Test User'}
 // Hint: Use async/await with a Promise that wraps setTimeout.
+
+async function getUserDataJS(id) {
+  const user = await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        id: id,
+        name: "Test User"
+      });
+    }, 500);
+  });
+
+  return user;
+}
+
+async function run() {
+  const data = await getUserDataJS(1);
+  console.log(data);
+}
+
+run();
