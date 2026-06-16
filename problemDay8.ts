@@ -78,3 +78,48 @@ async function ExretryTS<T>(
 // myPromiseAll([p1, p2, p3]).then(results => console.log(results));
 // Hint: Track resolved count and results array; reject on first failure.
 
+function myPromiseAllTS<T>(promises: Array<Promise<T> | T>): Promise<T[]> {
+  return new Promise((resolve, reject) => {
+    const results: T[] = [];
+    let resolvedCount: number = 0;
+
+    if (promises.length === 0) {
+      resolve([]);
+      return;
+    }
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((value: T) => {
+          results[index] = value;
+          resolvedCount++;
+
+          if (resolvedCount === promises.length) {
+            resolve(results);
+          }
+        })
+        .catch((error: unknown) => {
+          reject(error);
+        });
+    });
+  });
+}
+
+// Example
+const p1TS = Promise.resolve(10);
+const p2TS = Promise.resolve(20);
+const p3TS = Promise.resolve(30);
+
+myPromiseAllTS([p1TS, p2TS, p3TS])
+  .then((results) => console.log(results))
+  .catch((error) => console.log(error));
+
+// Output: [10, 20, 30]
+
+
+
+// Problem 39: Flatten Object (Deep)  [Medium]
+// Description: Write a function flattenObject(obj) that takes a deeply nested object and returns a flat object with dot-notation keys.
+// Example:
+// Input: {a: {b: {c: 1}}}Output: {'a.b.c': 1}
+// Hint: Use recursion; build the key by joining parent keys with dots.

@@ -65,3 +65,81 @@ async def main():
 asyncio.run(main())
 
 
+# Problem 38: Implement Promise.all from Scratch  [Hard]
+# Description: Write a function myPromiseAll(promises) that behaves like Promise.all — resolves with an array of results when all resolve, rejects immediately if any rejects.
+# Example:
+# myPromiseAll([p1, p2, p3]).then(results => console.log(results));
+# Hint: Track resolved count and results array; reject on first failure.
+
+import asyncio
+
+async def my_promise_all_py(tasks):
+    results = [None] * len(tasks)
+
+    async def run_task(task, index):
+        result = await task
+        results[index] = result
+
+    running_tasks = []
+
+    for index, task in enumerate(tasks):
+        running_tasks.append(run_task(task, index))
+
+    await asyncio.gather(*running_tasks)
+
+    return results
+
+# Example Usage
+import asyncio
+
+async def my_promise_all_py(tasks):
+    results = [None] * len(tasks)
+
+    async def run_task(task, index):
+        result = await task
+        results[index] = result
+
+    running_tasks = []
+
+    for index, task in enumerate(tasks):
+        running_tasks.append(run_task(task, index))
+
+    await asyncio.gather(*running_tasks)
+
+    return results
+
+
+
+# Python Rejection Example
+import asyncio
+
+async def success_task():
+    await asyncio.sleep(0.5)
+    return "Success"
+
+async def failed_task():
+    await asyncio.sleep(0.2)
+    raise Exception("Something went wrong")
+
+async def main():
+    try:
+        results = await my_promise_all_py([
+            success_task(),
+            failed_task()
+        ])
+
+        print(results)
+    except Exception as error:
+        print("Rejected:", error)
+
+asyncio.run(main())
+
+# Output: Rejected: Something went wrong
+
+
+# Problem 39: Flatten Object (Deep)  [Medium]
+# Description: Write a function flattenObject(obj) that takes a deeply nested object and returns a flat object with dot-notation keys.
+# Example:
+# Input: {a: {b: {c: 1}}}Output: {'a.b.c': 1}
+# Hint: Use recursion; build the key by joining parent keys with dots.
+

@@ -77,3 +77,89 @@ run();
 // Example:
 // myPromiseAll([p1, p2, p3]).then(results => console.log(results));
 // Hint: Track resolved count and results array; reject on first failure.
+
+function myPromiseAllJS(promises) {
+  return new Promise((resolve, reject) => {
+    const results = [];
+    let resolvedCount = 0;
+
+    if (promises.length === 0) {
+      resolve([]);
+      return;
+    }
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((value) => {
+          results[index] = value;
+          resolvedCount++;
+
+          if (resolvedCount === promises.length) {
+            resolve(results);
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  });
+}
+
+// Example
+const p1 = Promise.resolve(10);
+const p2 = Promise.resolve(20);
+const p3 = Promise.resolve(30);
+
+myPromiseAllJS([p1, p2, p3])
+  .then((results) => console.log(results))
+  .catch((error) => console.log(error));
+
+// Output: [10, 20, 30]
+
+const p4 = Promise.resolve("A");
+const p5 = Promise.reject("Something went wrong");
+const p6 = Promise.resolve("C");
+
+myPromiseAllJS([p4, p5, p6])
+  .then((results) => console.log(results))
+  .catch((error) => console.log("Rejected:", error));
+
+// Output: Rejected: Something went wrong
+
+
+// Problem 39: Flatten Object (Deep)  [Medium]
+// Description: Write a function flattenObject(obj) that takes a deeply nested object and returns a flat object with dot-notation keys.
+// Example:
+// Input: {a: {b: {c: 1}}}Output: {'a.b.c': 1}
+// Hint: Use recursion; build the key by joining parent keys with dots.
+
+function flattenObjectJS(obj, parentKey = "", result = {}) {
+  for (let key in obj) {
+    const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+    if (
+      typeof obj[key] === "object" &&
+      obj[key] !== null &&
+      !Array.isArray(obj[key])
+    ) {
+      flattenObjectJS(obj[key], newKey, result);
+    } else {
+      result[newKey] = obj[key];
+    }
+  }
+
+  return result;
+}
+
+// Example
+const inputJS = {
+  a: {
+    b: {
+      c: 1
+    }
+  }
+};
+
+console.log(flattenObjectJS(inputJS));
+
+// Output: { 'a.b.c': 1 }
